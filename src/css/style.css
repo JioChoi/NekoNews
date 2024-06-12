@@ -18,6 +18,13 @@
 	height: 30px;
 }
 
+#container {
+	width: 100%;
+	background-color: #ffffff;
+
+	margin-bottom: 90px;
+}
+
 h1 {
 	margin: 14px;
 	margin-top: 20px;
@@ -150,6 +157,7 @@ h1 {
 	width: calc(100% - 12px - 80px);
 	height: 68px;
 }
+
 #msg_a div {
 	position: absolute;
 	top: 0;
@@ -160,7 +168,25 @@ h1 {
 
 	background-color: #ffffff;
 	border-radius: 16px;
+
+	animation: showMsg 0.4s ease-in-out;
 }
+
+@keyframes showMsg {
+	0% {
+		top: 28px;
+		left: calc(100% - 18px - 32px);
+		width: 32px;
+		height: 32px;
+	}
+	100% {
+		top: 0;
+		left: 0;
+		width: calc(100% - 18px);
+		height: 100%;
+	}
+}
+
 #msg_a svg {
 	position: absolute;
 	top: 32px;

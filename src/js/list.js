@@ -36,7 +36,7 @@ function addListItem(img, title, date, id) {
 	article.appendChild(info);
 
 	article.addEventListener('click', function () {
-		
+		window.history.replaceState(null, '', '/article/' + id);
 	});
 
 	document.getElementById('recentNews').appendChild(article);
@@ -56,7 +56,7 @@ function addCardItem(img, title, id) {
 	card.appendChild(cardTitle);
 
 	card.addEventListener('click', function () {
-		
+		window.history.replaceState(null, '', '/article/' + id);
 	});
 
 	document.getElementById('popularNews').appendChild(card);
