@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+
+	<style>
+		#cat {
+			position: fixed;
+			bottom: 140px;
+			right: 500px;
+		}
+		img {
+			position: absolute;
+
+			width: 140px;
+			height: 140px;
+
+			user-select: none;
+		}
+		#msg {
+			user-select: none;
+			position: fixed;
+			bottom: 14px;
+			right: 510px;
+
+			background-color: #ffffff;
+			color: #000000;
+
+			border: 2px solid #000000;
+			width: 500px;
+			height: 70px;
+
+			padding: 10px;
+
+			border-radius: 20px;
+		}
+		#arr {
+			position: fixed;
+			bottom: 70px;
+			right: 497px;
+
+			width: 20px;
+			height: 16px;
+
+			z-index: 1000;
+		}
+		
+	</style>
+</head>
+<body>
+	<img src="msg.png" id="arr">
+	<div id="msg">
+		안녕! 나는 고양이 기자 레오야!!!
+	</div>
+	<div id="cat">
+		<img id="face" src="1.png">
+		<img id="mouth" src="mouth/1.png">
+	</div>
+
+	<script>
+		// load images
+		new Image().src = '1.png';
+		new Image().src = '2.png';
+
+		setInterval(() => {
+			document.getElementById('face').src = '2.png';
+
+			setTimeout(() => {
+				document.getElementById('face').src = '1.png';
+			}, 200);
+		}, 3000);
+
+		window.addEventListener('mousedown', (e) => {
+			document.getElementById('mouth').src = 'mouth/3.png';
+		});
+
+		window.addEventListener('mouseup', (e) => {
+			document.getElementById('mouth').src = 'mouth/1.png';
+		});
+	</script>
+</body>
+</html>
