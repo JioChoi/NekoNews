@@ -17,7 +17,7 @@ table, caption, tbody, tfoot, thead, tr, th, td,
 article, aside, canvas, details, embed, 
 figure, figcaption, footer, header, hgroup, 
 menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
+time, mark, audio, video, p {
 	margin: 0;
 	padding: 0;
 	border: 0;
@@ -32,6 +32,13 @@ time, mark, audio, video {
 
 	vertical-align: baseline;
 }
+
+h1, h2, h3, h4, h5, h6, p, span {
+	white-space: break-spaces;
+	word-break: keep-all;
+	overflow-wrap: break-word;
+}
+
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
