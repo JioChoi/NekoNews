@@ -47,8 +47,12 @@ window.addEventListener('load', function () {
 		}
 	}
 	else {
-		openPage(location.split('/')[2]);
+		showPage(location.split('/')[2]);
 	}
+
+	this.document.getElementById('header').querySelector('img').addEventListener('click', function () {
+		window.location.href = '/';
+	});
 });
 
 function show_msg_a(text) {
@@ -118,7 +122,12 @@ function openPage(id) {
 	window.history.replaceState(null, '', '/article/' + id);
 	
 	setTimeout(() => {
-		document.getElementById('container').style.display = 'none';
-		show_msg_b();
+		showPage(id);
 	}, 400);
+}
+
+function showPage(id) {
+	document.body.classList.add('disableScroll');
+	document.getElementById('container').classList.add('hidden');
+	show_msg_b();
 }
