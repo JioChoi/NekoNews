@@ -13,18 +13,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/article/:id', (req, res) => {
-	fs.readFile(__dirname + '/src/index.html', 'utf8', (err, data) => {
-		if(err) {
-			res.status(500).send('Internal Server Error');
-			return;
-		}
-
-		data = data.replaceAll('/css', '../css');
-		data = data.replaceAll('/js', '../js');
-		data = data.replaceAll('/assets', '../assets');
-
-		res.send(data);
-	});
+	res.sendFile(__dirname + '/src/article.html');
 });
 
 app.listen(PORT, () => {

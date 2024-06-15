@@ -117,17 +117,10 @@ function getVisitCount() {
 }
 
 function openPage(id) {
-	hide_msg_a();
-	document.getElementById('container').classList.add('hidden');
-	window.history.replaceState(null, '', '/article/' + id);
-	
-	setTimeout(() => {
-		showPage(id);
-	}, 400);
+	window.location.href = '/article/' + id;
 }
 
 function showPage(id) {
 	document.body.classList.add('disableScroll');
-	document.getElementById('container').classList.add('hidden');
 	show_msg_b();
 }
