@@ -3,14 +3,16 @@ const loadSize = 20;
 let listPos = 0;
 let listEnd = false;
 
-document.addEventListener('DOMContentLoaded', function () {
-	loadArticles(listPos, loadSize);
-	loadPopularArticles();
+document.addEventListener('DOMContentLoaded', async function () {
+	await waitForAll(loadArticles(listPos, loadSize), loadPopularArticles());
+	finishLoading();
 
 	const more = document.getElementById('more');
 	more.addEventListener('click', function () {
 		more.innerText = '로딩중...';
 	});
+
+	animateCat();
 });
 
 async function loadPopularArticles() {
