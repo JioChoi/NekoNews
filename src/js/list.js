@@ -1,4 +1,4 @@
-const loadSize = 20;
+const loadSize = 15;
 
 let listPos = 0;
 let listEnd = false;
@@ -8,8 +8,19 @@ document.addEventListener('DOMContentLoaded', async function () {
 	finishLoading();
 
 	const more = document.getElementById('more');
-	more.addEventListener('click', function () {
+	more.addEventListener('click', async function () {
+		if (more.innerText == '로딩중...') {
+			return;
+		}
+
 		more.innerText = '로딩중...';
+		await loadArticles(listPos, loadSize);
+		if (listEnd) {
+			more.style.display = 'none';
+		}
+		else {
+			more.innerText = '기사 더보기 ▼';
+		}
 	});
 
 	animateCat();
