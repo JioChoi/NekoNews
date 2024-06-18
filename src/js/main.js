@@ -48,6 +48,7 @@ window.addEventListener('load', function () {
 	}
 	else {
 		showPage(location.split('/')[2]);
+		animateCat();
 	}
 
 	this.document.getElementById('header').querySelector('img').addEventListener('click', function () {
