@@ -1,9 +1,11 @@
 const host = 'https://nekonews.onrender.com'
 
 document.addEventListener('DOMContentLoaded', function () {
-	document.getElementById('loading').addEventListener('click', function (e) {
-		e.stopPropagation();
-	});
+	if (document.getElementById('loading') != null) {
+		document.getElementById('loading').addEventListener('click', function (e) {
+			e.stopPropagation();
+		});
+	}
 });
 
 function finishLoading() {
