@@ -1,1 +1,1 @@
-const host = 'https://nekonews.onrender.com/'
+const host = 'https://nekonews.onrender.com'
