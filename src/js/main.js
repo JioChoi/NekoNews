@@ -59,7 +59,7 @@ function show_msg_a(text) {
 	document.getElementById('msg_a').classList.add('shown');
 
 	setTimeout(() => {
-		typeWriter('msg_a_text', text, 70);
+		typeWriter('msg_a_text', text, 50);
 	}, 300);
 }
 

@@ -18,7 +18,7 @@ body.disableScroll {
 	height: 54px;
 
 	background-color: #ffffff;
-	border-radius: 0 0 10px 10px;
+	/* border-radius: 0 0 10px 10px; */
 
 	box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.15);
 
@@ -28,6 +28,9 @@ body.disableScroll {
 #header img {
 	width: auto;
 	height: 30px;
+}
+#header img:hover {
+	cursor: pointer;
 }
 
 #container {
@@ -75,6 +78,12 @@ h1 {
 .card {
 	width: calc(50% - 6px);
 }
+.card:hover {
+	cursor: pointer;
+	filter: brightness(95%);
+	-webkit-filter: brightness(95%);
+	text-decoration: underline;
+}
 
 .card img {
 	width: 100%;
@@ -109,6 +118,12 @@ h1 {
 .list .article:last-child {
 	border-bottom: none;
 	padding-bottom: 0;
+}
+.list .article:hover {
+	cursor: pointer;
+	filter: brightness(95%);
+	-webkit-filter: brightness(95%);
+	text-decoration: underline;
 }
 
 .list .article img {
@@ -156,6 +171,10 @@ h1 {
 
 	padding: 14px;
 }
+#more:hover {
+	cursor: pointer;
+	text-decoration: underline;
+}
 
 #neko {
 	position: fixed;
@@ -184,6 +203,20 @@ h1 {
 	width: 140px;
 	height: auto;
 	pointer-events: all;
+
+	animation: talk 0.15s linear 3;
+}
+
+@keyframes talk {
+	0% {
+		transform: translateY(0px);
+	}
+	50% {
+		transform: translateY(-5px);
+	}
+	100% {
+		transform: translateY(0px);
+	}
 }
 
 .shown {
@@ -314,6 +347,8 @@ article {
 
 	width: calc(100% - 28px);
 	height: calc(100% - 10px - 9px);
+	
+	overflow-x: hidden;
 	overflow-y: scroll;
 
 	pointer-events: all;
@@ -352,6 +387,13 @@ article p {
 
 article img {
 	width: 100%;
+	margin-left: 50%;
+	transform: translateX(-50%);
+
+	max-width: 700px;
+
+	margin-top: 10px;
+
 	aspect-ratio: 3/2;
 
 	background-color: #f5f5f5;
