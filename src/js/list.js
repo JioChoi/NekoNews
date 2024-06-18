@@ -4,7 +4,14 @@ let listPos = 0;
 let listEnd = false;
 
 document.addEventListener('DOMContentLoaded', async function () {
-	await waitForAll(loadArticles(listPos, loadSize), loadPopularArticles());
+	let location = window.location.pathname;
+	if (location == '/') {
+		await waitForAll(loadArticles(listPos, loadSize), loadPopularArticles());
+	}
+	else {
+		await loadArticles(listPos, loadSize);
+	}
+
 	finishLoading();
 
 	const more = document.getElementById('more');

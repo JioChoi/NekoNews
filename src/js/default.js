@@ -9,7 +9,9 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function finishLoading() {
-	document.getElementById('loading').style.display = 'none';
+	if (document.getElementById('loading') != null) {
+		document.getElementById('loading').style.display = 'none';
+	}
 }
 
 function waitForAll(...ps) {

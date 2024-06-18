@@ -146,6 +146,7 @@ h1 {
 .list .article h2 {
 	font-size: 14px;
 	font-weight: 400;
+	color: #000000;
 }
 
 .list .article h3 {
@@ -277,7 +278,7 @@ h1 {
 	pointer-events: all;
 	user-select: text;
 }
-#msg_b div {
+#msg_b .upper, #msg_b .lower {
 	position: absolute;
 	
 	top: calc(100% - 18px - 32px);
@@ -292,7 +293,7 @@ h1 {
 	transition: 0.3s ease-in-out;
 	box-shadow: 0 0 0 5px #ffffff inset;
 }
-#msg_b.shown div {
+#msg_b.shown .upper, #msg_b.shown .lower {
 	top: 54px;
 	left: 0;
 	width: 100%;
@@ -383,7 +384,7 @@ article p {
 	margin-bottom: 20px;
 }
 
-article img {
+article .image {
 	width: 100%;
 	margin-left: 50%;
 	transform: translateX(-50%);
@@ -421,6 +422,15 @@ article h5 {
 
 article h5 strong {
 	font-weight: 600;
+}
+
+article .list {
+	margin: 0;
+}
+
+article #more {
+	margin-left: 0;
+	margin-right: 0;
 }
 
 /* Loading */
