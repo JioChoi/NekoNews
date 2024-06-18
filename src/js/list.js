@@ -24,13 +24,38 @@ async function loadArticles(start, size) {
 	});
 	response = await response.json();
 
+	// Change list position
 	listPos += response.length;
 	if (response.length < size) {
 		listEnd = true;
 	}
 
+	const today = new Date();
+	
 	for (let i = 0; i < response.length; i++) {
-		addListItem(response[i].image, response[i].title, response[i].time, response[i].id);
+		// Format time
+		const date = new Date(Number(response[i].time));
+		let time = '';
+
+		// If the article is posted today, show how long ago it was posted
+		if (today.getDate() == date.getDate()) {
+			if (today.getHours() == date.getHours()) {
+				if (today.getMinutes() == date.getMinutes()) {
+					time = today.getSeconds() - date.getSeconds() + '초 전';
+				}
+				else {
+					time = today.getMinutes() - date.getMinutes() + '분 전';
+				}
+			}
+			else {
+				time = today.getHours() - date.getHours() + '시간 전';
+			}
+		}
+		else {
+			time = date.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+		}
+
+		addListItem(response[i].image, response[i].title, time, response[i].id);
 	}
 }
 
