@@ -5,15 +5,27 @@ let listEnd = false;
 
 document.addEventListener('DOMContentLoaded', function () {
 	loadArticles(listPos, loadSize);
-
-	for(let i = 0; i < 2; i++)
-		addCardItem('https://plus.unsplash.com/premium_photo-1669865741911-fdc00c7c3859?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8MXx8RWFydGhxdWFrZSUyMHxlbnwwfHx8fDE3MTgxNjMyMDJ8MA&ixlib=rb-4.0.3&q=80&w=1080', "충격적인 고양이 뉴스다냥!!", "qrqrqrqr");
+	loadPopularArticles();
 
 	const more = document.getElementById('more');
 	more.addEventListener('click', function () {
 		more.innerText = '로딩중...';
 	});
 });
+
+async function loadPopularArticles() {
+	let response = await fetch(host + '/api/popular', {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	});
+	response = await response.json();
+
+	for (let i = 0; i < response.length; i++) {
+		addCardItem(response[i].image, response[i].title, response[i].id);
+	}
+}
 
 async function loadArticles(start, size) {
 	let response = await fetch(host + '/api/articles?' + new URLSearchParams({ start: start, size: size }), {
@@ -30,25 +42,22 @@ async function loadArticles(start, size) {
 		listEnd = true;
 	}
 
-	const today = new Date();
+	const today = Date.now();
 	
 	for (let i = 0; i < response.length; i++) {
 		// Format time
-		const date = new Date(Number(response[i].time));
+		const date = Number(response[i].time);
 		let time = '';
 
-		// If the article is posted today, show how long ago it was posted
-		if (today.getDate() == date.getDate()) {
-			if (today.getHours() == date.getHours()) {
-				if (today.getMinutes() == date.getMinutes()) {
-					time = today.getSeconds() - date.getSeconds() + '초 전';
-				}
-				else {
-					time = today.getMinutes() - date.getMinutes() + '분 전';
-				}
+		if (today - date < 1000 * 60 * 60 * 24) {
+			if (today - date < 1000) {
+				time = Math.floor((today - date) / 1000) + '초 전';
+			}
+			else if (today - date < 1000 * 60 * 60) {
+				time = Math.floor((today - date) / (1000 * 60)) + '분 전';
 			}
 			else {
-				time = today.getHours() - date.getHours() + '시간 전';
+				time = Math.floor((today - date) / (1000 * 60 * 60)) + '시간 전';
 			}
 		}
 		else {

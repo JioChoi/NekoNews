@@ -29,8 +29,45 @@ app.get('/', (req, res) => {
 	res.sendFile(__dirname + '/src/index.html');
 });
 
-app.get('/article/:id', (req, res) => {
-	res.sendFile(__dirname + '/src/article.html');
+app.get('/article/:id', async (req, res) => {
+	// Check if id is valid
+	let id = req.params.id;
+	if (!id || id.length != 8) {
+		res.redirect('/');
+		return;
+	}
+
+	// Get article from database
+	let query = "SELECT * FROM nekonews.articles WHERE id = $1";
+	let response = await queryDB(query, [id]);
+
+	if (response.rows.length == 0) {
+		res.redirect('/');
+		return;
+	}
+
+	let article = response.rows[0];
+
+	let data = fs.readFileSync(__dirname + '/src/article.html', 'utf8');
+	data = data.replaceAll("${title}", article.title);
+	data = data.replaceAll("${time}", new Date(Number(article.time)).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }));
+	data = data.replaceAll("${image}", article.image);
+
+	let content = "";
+	article.content = article.content.split("\n");
+	for (let i = 0; i < article.content.length; i++) {
+		if (article.content[i].length > 0) {
+			content += `<p>${article.content[i]}</p>`;
+		}
+	}
+
+	data = data.replaceAll("${content}", content);
+
+	res.send(data);
+
+	// Add view count
+	query = "UPDATE nekonews.articles SET view = view + 1 WHERE id = $1";
+	await queryDB(query, [id]);
 });
 
 /* API */
@@ -45,6 +82,16 @@ app.get('/api/articles', async (req, res) => {
 
 	let query = "SELECT id, title, time, image FROM nekonews.articles ORDER BY time DESC LIMIT $1 OFFSET $2";
 	let response = await queryDB(query, [size, start]);
+
+	res.json(response.rows);
+});
+
+app.get('/api/popular', async (req, res) => {
+	// Popular of the day
+	let mindate = Date.now() - 1000 * 60 * 60 * 24;
+
+	let query = "SELECT id, title, time, image FROM nekonews.articles WHERE time > $1 ORDER BY view DESC LIMIT 2";
+	let response = await queryDB(query, [mindate]);
 
 	res.json(response.rows);
 });
