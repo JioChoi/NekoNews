@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 		}
 	});
 
-	animateCat();
+	loadingFinished();
 });
 
 async function loadPopularArticles() {

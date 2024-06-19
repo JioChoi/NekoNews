@@ -277,6 +277,8 @@ h1 {
 
 	pointer-events: all;
 	user-select: text;
+	transition: 0.3s ease-in-out;
+
 }
 #msg_b .upper, #msg_b .lower {
 	position: absolute;
@@ -287,11 +289,9 @@ h1 {
 	height: 32px;
 
 	background-color: #ffffff;
-	background-color: #ffffff;
 	border-radius: 16px;
 
 	transition: 0.3s ease-in-out;
-	box-shadow: 0 0 0 5px #ffffff inset;
 }
 #msg_b.shown .upper, #msg_b.shown .lower {
 	top: 54px;
@@ -313,6 +313,17 @@ h1 {
 .lower {
 	z-index: 0;
 	outline: 1.5px solid #000000;
+}
+
+#msg_b.full {
+	top: 0;
+	left: 0;
+
+	width: 100%;
+	height: calc(100% + 18px);
+}
+#msg_b.full .lower {
+	outline: none;
 }
 
 #footer {
@@ -345,6 +356,7 @@ article {
 	padding-top: 9px;
 
 	width: calc(100% - 28px);
+	max-width: 785px;
 	height: calc(100% - 10px - 9px);
 	
 	overflow-x: hidden;

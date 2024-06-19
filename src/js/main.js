@@ -15,7 +15,7 @@ const msgDefault = [
 	"냥냥!! 릴리 오늘 기분 최고다냥! 신난다냥!",
 	"고양이들은 엄청 똑똑하다냥!! 릴리도 엄청 똑똑하다냥!",
 	"릴리 오늘 힘들다냥... 푹 쉬어야겠다냥...",
-	"냥냥!! 릴리는 고양이 기자로서 최선을 다할 거다냥! 앞으로도 많은 관심 부탁한다냥!",
+	"냥냥!! 릴리는 고양이 기자로서 최선을 다할 거다냥!!",
 ]
 
 const msg10 = [
@@ -34,9 +34,11 @@ const msg50 = [
 	"냥냥!! 방문자가 많아서 릴리는 기분이 좋다냥!!",
 ];
 
-window.addEventListener('load', function () {
+function loadingFinished() {
 	let location = window.location.pathname;
 	const visitCount = getVisitCount();
+
+	animateCat();
 
 	if (location == '/') {
 		if (visitCount == 1) {
@@ -46,7 +48,12 @@ window.addEventListener('load', function () {
 			show_msg_a(msgDefault[Math.floor(Math.random() * msgDefault.length)]);
 		}
 	}
-	else {
+}
+
+window.addEventListener('load', function () {
+	let location = window.location.pathname;
+
+	if (location != '/') {
 		showPage(location.split('/')[2]);
 		animateCat();
 	}
