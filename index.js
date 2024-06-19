@@ -15,6 +15,7 @@ const {
 } = require("@google/generative-ai");
 const { JSDOM } = require('jsdom');
 const cors = require('cors');
+const proxy = require('html2canvas-proxy');
 
 /* Express */
 const app = express();
@@ -24,6 +25,8 @@ app.use('/assets', express.static(__dirname + '/src/assets'));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use('/api/capture', proxy());
 
 app.use(cors(
 	{
@@ -138,16 +141,21 @@ client.connect(err => {
 });
 
 /* DATABASE FUNCTIONS */
-function startAutomation() {
+async function startAutomation() {
 	console.log("Starting Automation...");
+	await getAllNews();
 	automate();
+	
+	setInterval(() => {
+		getAllNews();
+	}, 1000 * 60 * 60 * 10);
 }
 
 async function automate() {
 	if (news.length == 0) {
-		console.log("Used all news! Getting new news!");
-		await getAllNews();
-		console.log(`Found ${news.length} articles!`);	
+		await sleep(1000 * 60 * 2);
+		automate();
+		return;
 	}
 
 	const item = news.shift();
@@ -219,15 +227,59 @@ async function getAllNews() {
 	// If failed to get news...
 	if (news.length == 0) {
 		console.log("Failed to get news! Retrying after 10 minutes...");
-		await sleep(600000);
-		console.log("Retrying now!");
-		await getAllNews();
 		return;
 	}
 
 	news = await news.sort((a, b) => {
 		return a.pv - b.pv;
 	}).reverse();
+	console.log("Successfully got all news! Count: " + news.length);
+
+	// Remove duplicates
+	news = news.filter((item, index, self) =>
+		index === self.findIndex((t) => (
+			t.title === item.title
+		))
+	);
+	console.log("Removed duplicates! Count: " + news.length);
+
+	// Remove non popular news
+	news = news.filter((item) => {
+		return item.pv / item.age > 10;
+	});
+	console.log("Removed non popular news! Count: " + news.length);
+
+	// Remove news that does not contain Korean in title
+	news = news.filter((item) => {
+		return /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(item.title);
+	});
+
+	console.log("Removed non-Korean news! Count: " + news.length);
+ 
+	// No news found
+	if (news.length == 0) {
+		console.log("Failed to get news! Retrying after 10 minutes...");
+		return;
+	}
+
+	console.log("Using AI to remove duplicates...");
+	let prompt = [
+		{text: "input: 중복된 내용을 다루는 뉴스를 제거하시오. 결과값만 출력하시오.\n\n" + JSON.stringify(news)},
+		{text: "output: "}
+	]
+	let response = await gemini(prompt);
+
+	if (response == null) {
+		console.log("Failed to get news! Retrying after 10 minutes...");
+		return;
+	}
+
+	response = response.replace("```json", "");
+	response = response.replace("```", "");
+
+	news = JSON.parse(response);
+
+	console.log("Removed duplicates using AI! Count: " + news.length);
 
 	news = news.slice(0, 5);
 }
@@ -406,12 +458,12 @@ async function getImage(keyword) {
 
 	let config = {
 		method: 'get',
-		url: `https://unsplash.com/napi/search/photos?query=${keyword}&per_page=100`,
+		url: `https://unsplash.com/napi/search/photos?query=${keyword}&per_page=10`,
 	};
 
 	let response = await axios(config);
 	response = response.data.results;
-	response = response.filter(x => x.premium == false);
+	// response = response.filter(x => x.premium == false);
 
 	if (response.length == 0) {
 		return getImage("kitten");

@@ -1,6 +1,10 @@
-const host = 'https://nekonews.onrender.com'
+let host = 'https://nekonews.onrender.com';
+host = 'http://127.0.0.1';
 
 document.addEventListener('DOMContentLoaded', function () {
+	window.scrollTo(0,0); 
+	document.body.style.height = window.innerHeight + 'px';
+
 	if (document.getElementById('loading') != null) {
 		document.getElementById('loading').addEventListener('click', function (e) {
 			e.stopPropagation();

@@ -38,9 +38,9 @@ function loadingFinished() {
 	let location = window.location.pathname;
 	const visitCount = getVisitCount();
 
-	animateCat();
-
 	if (location == '/') {
+		animateCat();
+
 		if (visitCount == 1) {
 			show_msg_a("안녕하다냥! 네코뉴스의 고양이 기자, 릴리라고 한다냥!");	
 		}
@@ -52,11 +52,6 @@ function loadingFinished() {
 
 window.addEventListener('load', function () {
 	let location = window.location.pathname;
-
-	if (location != '/') {
-		showPage(location.split('/')[2]);
-		animateCat();
-	}
 
 	this.document.getElementById('header').querySelector('img').addEventListener('click', function () {
 		window.location.href = '/';
@@ -131,4 +126,60 @@ function openPage(id) {
 function showPage(id) {
 	document.body.classList.add('disableScroll');
 	show_msg_b();
+}
+
+function share() {
+	if (!navigator.share) {
+		navigator.clipboard.writeText(url.innerText);
+		alert('게시글 주소가 복사되었습니다.');
+		return;
+	}
+
+	window.navigator.share({
+		title: document.getElementById('title').innerText,
+		url: window.location.href
+	});
+}
+
+function capture() {
+	let element = document.createElement('div');
+
+	// 0 0 15px 0 rgba(0, 0, 0, 0.15)
+	// box-shadow to border-bottom
+
+	let header = document.getElementById('header').cloneNode(true);
+	header.style.width = '390px';
+	header.style.position = 'relative';
+	header.style.borderBottom = '1px solid #e3e3e3';
+	header.style.boxShadow = 'none';
+	header.style.marginBottom = '5px';
+	
+	element.appendChild(header);
+
+	let article = document.getElementById('article').cloneNode(true);
+	article.classList.add('contents');
+	article.style.marginTop = '0px';
+	element.appendChild(article);
+	
+	element.style.position = 'absolute';
+	element.style.top = '0px';
+	element.style.left = '0px';
+	element.style.zIndex = '-1';
+
+	element.style.width = '390px';
+
+	document.body.prepend(element);
+
+	html2canvas(element, {
+		scale: 2,
+		proxy: `${host}/api/capture`
+	}).then(canvas => {
+		let link = document.createElement('a');
+		link.download = `네코뉴스 - ${document.getElementById('title').innerText}.png`;
+
+		element.remove();
+
+		link.href = canvas.toDataURL('image/png');
+		link.click();
+	});
 }
