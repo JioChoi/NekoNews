@@ -1,5 +1,5 @@
 let host = 'https://nekonews.onrender.com';
-host = 'http://127.0.0.1';
+//host = 'http://127.0.0.1';
 
 document.addEventListener('DOMContentLoaded', function () {
 	window.scrollTo(0,0); 
