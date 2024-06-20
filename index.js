@@ -148,7 +148,7 @@ async function startAutomation() {
 	
 	setInterval(() => {
 		getAllNews();
-	}, 1000 * 60 * 60 * 10);
+	}, 1000 * 60 * 10);
 }
 
 async function automate() {
@@ -231,7 +231,7 @@ async function getAllNews() {
 	}
 
 	news = await news.sort((a, b) => {
-		return a.pv - b.pv;
+		return (a.pv / a.age) - (b.pv / b.age);
 	}).reverse();
 	console.log("Successfully got all news! Count: " + news.length);
 
@@ -243,11 +243,11 @@ async function getAllNews() {
 	);
 	console.log("Removed duplicates! Count: " + news.length);
 
-	// Remove non popular news
-	news = news.filter((item) => {
-		return item.pv / item.age > 10;
-	});
-	console.log("Removed non popular news! Count: " + news.length);
+	// // Remove non popular news
+	// news = news.filter((item) => {
+	// 	return item.pv / item.age > 5;
+	// });
+	// console.log("Removed non popular news! Count: " + news.length);
 
 	// Remove news that does not contain Korean in title
 	news = news.filter((item) => {
@@ -261,6 +261,8 @@ async function getAllNews() {
 		console.log("Failed to get news! Retrying after 10 minutes...");
 		return;
 	}
+
+	news = news.slice(0, 10);
 
 	console.log("Using AI to remove duplicates...");
 	let prompt = [
